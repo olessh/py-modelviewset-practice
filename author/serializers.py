@@ -11,6 +11,10 @@ class AuthorSerializer(serializers.ModelSerializer):
     age = serializers.IntegerField()
     retired = serializers.BooleanField()
 
+    class Meta:
+        model = Author
+        fields = "__all__"
+
     def create(self, validated_data):
         return Author.objects.create(**validated_data)
 
@@ -27,7 +31,7 @@ class AuthorSerializer(serializers.ModelSerializer):
             "pseudonym",
             instance.pseudonym
         )
-        instance.age = validated_data("age", instance.age)
+        instance.age = validated_data.get("age", instance.age)
         instance.retired = validated_data.get(
             "retired",
             instance.retired
